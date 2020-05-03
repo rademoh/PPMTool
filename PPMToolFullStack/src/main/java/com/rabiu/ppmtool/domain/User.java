@@ -7,8 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Rabiu Ademoh
@@ -31,8 +33,9 @@ public class User implements UserDetails {
     private String confirmPassword;
     private Date create_At;
     private Date update_At;
-
     //OneToMany with Project
+    @OneToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER, mappedBy = "user", orphanRemoval = true)
+    private List<Project> projects = new ArrayList<>();
 
     public User() {
     }
@@ -93,6 +96,15 @@ public class User implements UserDetails {
         this.update_At = update_At;
     }
 
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
     @PrePersist
     protected void onCreate(){
         this.create_At = new Date();
@@ -104,6 +116,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
     }

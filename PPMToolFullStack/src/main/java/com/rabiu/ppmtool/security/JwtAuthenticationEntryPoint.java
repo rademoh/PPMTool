@@ -14,6 +14,7 @@ import java.io.IOException;
 /**
  * @author Rabiu Ademoh
  */
+
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
